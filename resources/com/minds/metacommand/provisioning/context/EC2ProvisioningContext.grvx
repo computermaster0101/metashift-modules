@@ -1,0 +1,26 @@
+import com.amazonaws.services.ec2.model.CreateSecurityGroupRequest
+import com.amazonaws.services.ec2.model.CreateVpcRequest
+import com.amazonaws.services.ec2.model.DescribeImagesRequest
+import com.amazonaws.services.ec2.model.Filter
+
+/**
+ * Created by navid on 2/25/15.
+ */
+beans {
+
+    /** General Definitions **/
+    describeImagesRequestTrusty(DescribeImagesRequest){
+        // we will want to use the ami that gets
+        filters = [new Filter("name", ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-20150123"])]
+    }
+
+    describeImagesRequestUtopic(DescribeImagesRequest) {
+        // we will want to use the ami that gets
+        filters = [new Filter("name", ["ubuntu/images/hvm-ssd/ubuntu-utopic-14.10-amd64-server-20150202"])]
+    }
+
+    describeImagesRequestVivid(DescribeImagesRequest) {
+        // we will want to use the ami that gets
+        filters = [new Filter("name", ["ubuntu/images/hvm-ssd/ubuntu-vivid-15.04-amd64-server-20151219"])]
+    }
+}

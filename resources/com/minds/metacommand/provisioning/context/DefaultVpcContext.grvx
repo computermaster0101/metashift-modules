@@ -1,0 +1,32 @@
+package com.minds.metacommand.provisioning.context
+import com.amazonaws.services.ec2.model.CreateInternetGatewayRequest
+import com.amazonaws.services.ec2.model.CreateVpcRequest
+import com.amazonaws.services.ec2.model.ModifyVpcAttributeRequest
+
+/**
+ * Provides all of the beans needed to provision an Environment
+ */
+beans {
+
+    /** General Definitions **/
+
+    // creates #{vpcId}
+    defaultVpcReq(CreateVpcRequest){
+        cidrBlock = "10.0.0.0/16"
+        instanceTenancy = "default" //default, dedicated
+    }
+
+    vpcAttributeDnsSupport(ModifyVpcAttributeRequest){
+        enableDnsSupport = true
+    }
+
+    vpcAttributeDnsHostnames(ModifyVpcAttributeRequest){
+        enableDnsHostnames = true
+    }
+
+    defaultCreateInternetGatewayReq(CreateInternetGatewayRequest){
+
+    }
+
+}
+

@@ -1,0 +1,46 @@
+/*
+ * Template command that will run a series of commands on a remote host using ssh.
+ * Expects:
+ * String user
+ * String keyFilePath
+ * String host
+ * String[] commands
+ *
+ */
+
+package com.minds.metacommand.provisioning.templates
+
+
+@Grab('com.aestasit.infrastructure.sshoogr:sshoogr:0.9.18')
+@GrabExclude('org.codehaus.groovy:groovy-all')
+
+import static com.aestasit.infrastructure.ssh.DefaultSsh.*
+
+// All Options available at com.aestasit.infrastructure.ssh.SshOptions
+options.trustUnknownHosts = true
+
+remoteSession {
+    user = '${user}'
+    keyFile = new File('${keyFilePath}')
+    host = '${host}'
+    password =''
+    connect()
+    out << "=====================================================\n"
+
+    out << magenta <<  "Connected To Remote Server" << reset <<'\n'
+
+    out <<  "=====================================================\n"
+    out.flush()
+
+    <%
+        // Template block insertion here
+        commands.each{
+     %>
+    exec '${it}'
+     <%
+        }
+    %>
+    out << "=====================================================\n"
+    out.flush()
+}
+

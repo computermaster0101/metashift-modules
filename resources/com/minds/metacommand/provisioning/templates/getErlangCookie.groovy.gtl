@@ -1,0 +1,26 @@
+package com.minds.metacommand.provisioning.templates
+@Grab('com.aestasit.infrastructure.sshoogr:sshoogr:0.9.18')
+@GrabExclude('org.codehaus.groovy:groovy-all')
+import static com.aestasit.infrastructure.ssh.DefaultSsh.*
+
+options.trustUnknownHosts = true
+options.reuseConnection = true
+
+remoteSession {
+    user = '${user}'
+    keyFile = new File('${keyFilePath}')
+    host = '${host}'
+    password =''
+    connect()
+
+    // need broader permissions to transfer the file
+    exec 'sudo chmod 755 /var/lib/rabbitmq/.erlang.cookie'
+
+    scp {
+        from { remoteFile '/var/lib/rabbitmq/.erlang.cookie' }
+        into { localFile '/tmp/metashift/rabbitmq/erlang.cookie-${creationId}' }
+    }
+
+    // need to restrict access otherwise there are errors.
+    exec 'sudo chmod 700 /var/lib/rabbitmq/.erlang.cookie'
+}
