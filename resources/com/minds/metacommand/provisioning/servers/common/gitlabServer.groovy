@@ -228,7 +228,7 @@ elbClient.registerInstancesWithLoadBalancer(new RegisterInstancesWithLoadBalance
 templater.put("host", server.publicDnsName)
 
 templater.source(shellExecutorTemplate)
-templater.put("commands", ["sudo git archive --remote=git@bitbucket.org:mindsignited/shellbox.git master replicate -o replicate.tar && sudo tar -xf replicate.tar && sudo bash ./replicate git:git@bitbucket.org:mindsignited/shellbox.git " +
+templater.put("commands", ["sudo git archive --remote=git@github.com:MindsIgnited/shellbox.git master replicate -o replicate.tar && sudo tar -xf replicate.tar && sudo bash ./replicate git:git@github.com:MindsIgnited/shellbox.git " +
                                    "&& sudo bash ./shellbox/setupEBSVolume.sh " +
                                                         "--device /dev/xvdf " +
                                                         "--mount /var/opt/gitlab/git-data" +
