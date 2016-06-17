@@ -62,6 +62,7 @@ DhcpOptions dhcpOptions = ec2.createDhcpOptions(new CreateDhcpOptionsRequest()
                                                         .withKey("domain-name-servers")
                                                         .withValues("AmazonProvidedDNS")))
 tags << new Tag('Name', "${environmentDomainApex}-DhcpOpts-"+creationId)
+Thread.sleep(5 * 1000) // sometimes it errors out b/c it says the DHCP opts isn't available. so wait a bit.
 dhcpOptions.createTags(tags)
 dhcpOptions.associateWithVpc(new AssociateDhcpOptionsRequest().withVpcId(vpc.getId()))
 

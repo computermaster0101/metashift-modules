@@ -57,7 +57,7 @@ out << 'activeKeyPair: '<< blue << activeKeyPair << reset << '\n'
 out << 'sriekELBSubdomain: ' << blue << sriekELBSubdomain << reset << '\n'
 
 // Retrieve base ami
-InstanceType vmInstanceType = InstanceType.M3Large
+InstanceType vmInstanceType = InstanceType.T2Micro
 ImageCollection amis = ec2.getImages((DescribeImagesRequest)MetaContext.pull("describeImagesRequestVivid"))
 Image baseAmi = null
 if(amis.iterator().hasNext()){
@@ -106,8 +106,8 @@ serverSG.authorizeIngress(new AuthorizeSecurityGroupIngressRequest()
         .withGroupId(serverSG.getId())
         .withIpPermissions(new IpPermission()
         .withIpProtocol("tcp")
-        .withFromPort(8081)
-        .withToPort(8081)
+        .withFromPort(8080)
+        .withToPort(8080)
         .withUserIdGroupPairs(new UserIdGroupPair()
         .withGroupId(sriekELBSG.getId()))))
 
@@ -136,7 +136,7 @@ listeners.add(new Listener()
         .withProtocol("HTTPS")
         .withInstanceProtocol("HTTP")
         .withLoadBalancerPort(443)
-        .withInstancePort(8081)
+        .withInstancePort(8080)
         .withSSLCertificateId(certificateARNForELB))
 
 def elbName = environmentDomainApex.replace('.',"-")+"-SriekELB"
@@ -235,7 +235,8 @@ elbClient.registerInstancesWithLoadBalancer(new RegisterInstancesWithLoadBalance
 
 templater.put("host", server.publicDnsName)
 templater.source(shellExecutorTemplate)
-templater.put("commands", ["sudo git archive --remote=git@github.com:MindsIgnited/shellbox.git master replicate -o replicate.tar && sudo tar -xf replicate.tar && sudo bash ./replicate git:git@github.com:MindsIgnited/shellbox.git " +
+templater.put("commands", [" if [ -e ~/shellbox]; then sudo rm ~/shellbox -R; fi " +
+                                   "&& sudo git clone https://github.com/computermaster0101/shellbox.git " +
                                    "&& sudo bash ./shellbox/java8.sh " +
                                    "&& sudo bash ./shellbox/updateUlimit.sh " +
                                    "&& sudo bash ./shellbox/timezoneAndNtp.sh " +
