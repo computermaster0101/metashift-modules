@@ -104,6 +104,7 @@ out << 'Creating Subnets\n'
 out.flush()
 // NOTE: we need to have two subnets per Availability Zone as per MySQL DB's Multi A/Z Deployment (EJBCA)
 Subnet subnet = vpc.createSubnet('10.0.1.0/24')
+Thread.sleep(5 * 1000) // sometimes it errors out b/c it says the subnet opts isn't available. so wait a bit.
 Subnet subnet2 = vpc.createSubnet(new CreateSubnetRequest()
                                         .withVpcId(vpc.getId())
                                         .withCidrBlock('10.0.2.0/24')
